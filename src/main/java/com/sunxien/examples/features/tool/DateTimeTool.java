@@ -21,16 +21,14 @@ public class DateTimeTool {
     private static final DateTimeFormatter YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter HH_MM_SS = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-
     /**
      * @param timeZone
      * @return String
      */
     @Tool(name = "get_current_date", description = "获取指定时区的当前日期，不包含时间")
     public String getCurrentDate(@ToolParam(description = "服务器的时区名称", required = false) String timeZone) {
-        LocalDateTime now = LocalDateTime.now();
         TimeZone tz = getLocalTimeZone(timeZone);
-        String currentDate = YYYY_MM_DD.format(now.atZone(tz.toZoneId()));
+        String currentDate = YYYY_MM_DD.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current date: {} ({})", currentDate, tz.getID());
         return currentDate;
     }
@@ -41,9 +39,8 @@ public class DateTimeTool {
      */
     @Tool(name = "get_current_time", description = "获取指定时区的当前时间，不包含日期")
     public String getCurrentTime(@ToolParam(description = "服务器的时区名称", required = false) String timeZone) {
-        LocalDateTime now = LocalDateTime.now();
         TimeZone tz = getLocalTimeZone(timeZone);
-        String currentTime = HH_MM_SS.format(now.atZone(tz.toZoneId()));
+        String currentTime = HH_MM_SS.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current time: {} ({})", currentTime, tz.getID());
         return currentTime;
     }
@@ -54,9 +51,8 @@ public class DateTimeTool {
      */
     @Tool(name = "get_current_datetime", description = "获取指定时区的当前日期时间")
     public String getCurrentDateTime(@ToolParam(description = "服务器的时区名称", required = false) String timeZone) {
-        LocalDateTime now = LocalDateTime.now();
         TimeZone tz = getLocalTimeZone(timeZone);
-        String currentDateTime = YYYY_MM_DD_HH_MM_SS.format(now.atZone(tz.toZoneId()));
+        String currentDateTime = YYYY_MM_DD_HH_MM_SS.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current datetime: {} ({})", currentDateTime, tz.getID());
         return currentDateTime;
     }
