@@ -8,6 +8,6 @@ package com.sunxien.examples.features.singleagent;
 public class SingleAgent {
 
 
-    
+
 
 }
