@@ -1,0 +1,75 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      force: true
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
+    http2:
+      enabled: false
+    compression:
+      enabled: true
+      min-response-size: 1024
+      mime-types: application/json,text/html,text/xml,text/plain,text/css,application/javascript
+      exclude-user-agents: IE6,IE7
+    undertow:
+      threads:
+        io: 16
+        worker: 256
+      buffer-size: 1024
+      direct-buffers: true
+      no-request-timeout: 30000
+      always-set-keep-alive: true
+      idle-timeout: 60000
+      max-http-post-size: 2048
+      acesslog:
+        enabled: true
+        dir: ./logs
+        prefix: access_log.
+        suffix: .log
+        pattern: '%t %a "%r" %s (%D ms)'
+        rotate: true
+
+spring:
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+  datasource:
+    jdbc-url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true&rewriteBatchStatements=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    pool-name: HikariCP
+    minimum-idle: 5
+    idle-timeout: 600000
+    maximum-pool-size: 10
+    auto-commit: true
+    max-lifetime: 1800000
+    connection-timeout: 30000
+    connection-test-query: select 1 from dual
+    registerMbeans: false
+    data-source-properties:
+      cachePrepStmts: true
+      prepStmtCacheSize: 200
+      prepStmtCacheSqlLimit: 2048
+      useServerPrepStmts: true
+      useLocalSessionState: true
+      rewriteBatchedStatements: true
+      cacheResultSetMetadata: true
+      cacheServerConfiguration: true
+      elideSetAutoCommits: true
+      maintainTimeStats: false
+
+  logging:
+    level:
+      com.zaxxer.hikari.HikariConfig: DEBUG
+      com.zaxxer.hikari: TRACE
+      com.zaxxer.hikari.pool.HikariPool: INFO
+      com.zaxxer.hikari.pool.ProxyConnection: WARN
