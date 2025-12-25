@@ -55,6 +55,7 @@ public class ChatController {
         try {
             return Mocker.createChatClient()
                     .prompt(question)
+                    .tools(Mocker.createToolCallbacks())
                     .stream()
                     .chatResponse()
                     .filter(Objects::nonNull)

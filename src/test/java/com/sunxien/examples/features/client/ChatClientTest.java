@@ -27,6 +27,7 @@ public class ChatClientTest {
 
             Flux<Output> flux = Mocker.createChatClient()
                     .prompt(input)
+                    .tools(Mocker.createToolCallbacks())
                     .stream()
                     .chatResponse()
                     .filter(Objects::nonNull)
