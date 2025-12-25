@@ -2,45 +2,39 @@ server:
   port: 8088
   servlet:
     context-path: /
-    encoding:
-      charset: UTF-8
-      force: true
-    http:
-      encoding:
-        charset: UTF-8
+    tomcat:
+      accept-count: 1000
+      accesslog:
+        directory: ./logs
         enabled: true
-        force: true
-    http2:
-      enabled: false
-    compression:
-      enabled: true
-      min-response-size: 1024
-      mime-types: application/json,text/html,text/xml,text/plain,text/css,application/javascript
-      exclude-user-agents: IE6,IE7
-    undertow:
-      threads:
-        io: 16
-        worker: 256
-      buffer-size: 1024
-      direct-buffers: true
-      no-request-timeout: 30000
-      always-set-keep-alive: true
-      idle-timeout: 60000
-      max-http-post-size: 2048
-      acesslog:
-        enabled: true
-        dir: ./logs
+        encoding: UTF-8
+        file-date-format: yyyy-MM-dd HH:mm:ss
+        max-days: 7
+        pattern: '%t %h "%r" %s (%D ms, %b bytes)'
         prefix: access_log.
-        suffix: .log
-        pattern: '%t %a "%r" %s (%D ms)'
+        request-attributes-enabled: true
         rotate: true
+        suffix: .log
+      connection-timeout: 30
+      keep-alive-timeout: 30
+      max-connections: 200
+      max-http-form-post-size: 2097152
+      max-http-response-header-size: 8192
+      max-keep-alive-requests: -1
+      max-parameter-count: 256
+      threads:
+        max: 16
+        max-queue-capacity: 1024
+        min-spare: 8
+      uri-encoding: UTF-8
 
 spring:
-  http:
+  servlet:
     encoding:
-      enabled: true
       charset: UTF-8
+      enabled: true
       force: true
+      force-request: true
   datasource:
     jdbc-url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true&rewriteBatchStatements=true
     username: root

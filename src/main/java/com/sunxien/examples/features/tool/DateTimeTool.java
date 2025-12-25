@@ -30,7 +30,7 @@ public class DateTimeTool {
         TimeZone tz = getLocalTimeZone(timeZone);
         String currentDate = YYYY_MM_DD.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current date: {} ({})", currentDate, tz.getID());
-        return currentDate;
+        return "时区：" + tz.getID() + ", 当前日期：" + currentDate;
     }
 
     /**
@@ -42,7 +42,7 @@ public class DateTimeTool {
         TimeZone tz = getLocalTimeZone(timeZone);
         String currentTime = HH_MM_SS.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current time: {} ({})", currentTime, tz.getID());
-        return currentTime;
+        return "时区：" + tz.getID() + ", 当前时间：" + currentTime;
     }
 
     /**
@@ -54,7 +54,7 @@ public class DateTimeTool {
         TimeZone tz = getLocalTimeZone(timeZone);
         String currentDateTime = YYYY_MM_DD_HH_MM_SS.format(LocalDateTime.now().atZone(tz.toZoneId()));
         log.info("get current datetime: {} ({})", currentDateTime, tz.getID());
-        return currentDateTime;
+        return "时区：" + tz.getID() + ", 当前日期时间：" + currentDateTime;
     }
 
     /**

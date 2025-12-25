@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class ChatController {
      * @param question
      * @return String
      */
-    @GetMapping("/api/v1/chat/client/sync/{question}")
+    @GetMapping(path = "/api/v1/chat/client/sync/{question}")
     public String chatClientSync(@PathVariable(name = "question") String question) {
         log.info("request chat client api sync success");
         try {
@@ -40,9 +41,8 @@ public class ChatController {
                     .prompt(question)
                     .call()
                     .content();
-        } catch (Exception ex) {
-            log.error("call LLM failed.", ex);
-            return "call LLM failed. Error: " + ex.getMessage();
+        } catch (Throwable th) {
+            return "call LLM failed. Error: " + th.getMessage();
         }
     }
 
@@ -50,7 +50,7 @@ public class ChatController {
      * @param question
      * @return String
      */
-    @GetMapping("/api/v1/chat/client/stream/{question}")
+    @GetMapping(path = "/api/v1/chat/client/stream/{question}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Output> chatClientStream(@PathVariable(name = "question") String question) {
         try {
             return Mocker.createChatClient()
@@ -65,8 +65,8 @@ public class ChatController {
                         String finishReason = r.getResult().getMetadata().getFinishReason();
                         return new Output("CHAT", StreamUtils.processContent(reasoningContent, text, finishReason));
                     });
-        } catch (Exception ex) {
-            return Flux.just(new Output("CHAT", "call LLM failed. Error: " + ex.getMessage()));
+        } catch (Throwable th) {
+            return Flux.just(new Output("CHAT", "call LLM failed. Error: " + th.getMessage()));
         }
     }
 
@@ -74,13 +74,15 @@ public class ChatController {
      * @param question
      * @return String
      */
-    @GetMapping("/api/v1/chat/agent/stream/{question}")
+    @GetMapping(path = "/api/v1/chat/agent/stream/{question}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Output> chatAgentStream(@PathVariable(name = "question") String question) {
         try {
             ReactAgent chatAgent = ReactAgent.builder()
                     .name("CHAT_AGENT")
                     .model(Mocker.createChatModel())
                     .outputType(String.class)
+                    .chatOptions(Mocker.createChatOptions())
+                    .tools(Mocker.createToolCallbacks())
                     .saver(new MemorySaver()) // TODO Short-Term Memory
                     .build();
             RunnableConfig runnableConfig = RunnableConfig.builder()
@@ -98,8 +100,8 @@ public class ChatController {
                         Object finishReason = message.getMetadata().get("finishReason");
                         return new Output("CHAT", StreamUtils.processContent(reasoningContent, text, finishReason));
                     });
-        } catch (Exception ex) {
-            return Flux.just(new Output("CHAT", "call LLM failed. Error: " + ex.getMessage()));
+        } catch (Throwable th) {
+            return Flux.just(new Output("CHAT", "call LLM failed. Error: " + th.getMessage()));
         }
     }
 }

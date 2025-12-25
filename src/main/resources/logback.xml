@@ -7,6 +7,14 @@
         </encoder>
     </appender>
 
+    <!-- TODO 配置日志输出到文件 spring-ai-alibaba.log -->
+
+    <logger name="com.zaxxer" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.apache" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
     <logger name="org.xnio" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
