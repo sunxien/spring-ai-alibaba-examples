@@ -63,7 +63,7 @@ public class ChatController {
                         String text = message.getText();
                         Object reasoningContent = message.getMetadata().get("reasoningContent");
                         String finishReason = r.getResult().getMetadata().getFinishReason();
-                        return new Output("CHAT", StreamUtils.processContent(reasoningContent, text, finishReason));
+                        return new Output("CHAT_CLIENT", StreamUtils.processContent(reasoningContent, text, finishReason));
                     });
         } catch (Throwable th) {
             return Flux.just(new Output("CHAT", "call LLM failed. Error: " + th.getMessage()));
@@ -81,6 +81,10 @@ public class ChatController {
                     .name("CHAT_AGENT")
                     .model(Mocker.createChatModel())
                     .outputType(String.class)
+                    .systemPrompt("你是一位百事通。")
+                    .instruction("回答用户的问题。")
+                    .description("你是一个聊天机器人，陪伴客户聊天，回答用户问题。")
+                    .enableLogging(true)
                     .chatOptions(Mocker.createChatOptions())
                     .tools(Mocker.createToolCallbacks())
                     .saver(new MemorySaver()) // TODO Short-Term Memory

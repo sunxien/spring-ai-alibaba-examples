@@ -94,7 +94,7 @@ public final class Mocker {
      */
     private static Map<String, Object> createExtraBody() {
         Map<String, Object> enableThinking = new HashMap<>();
-        enableThinking.put("thinking", true);
+        // enableThinking.put("thinking", true);
         enableThinking.put("enable_thinking", true);
         Map<String, Object> extraBody = new HashMap<>();
         extraBody.put("chat_template_kwargs", enableThinking);
