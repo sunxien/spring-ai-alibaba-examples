@@ -1,0 +1,11 @@
+- id: 1
+  sql: |
+    select * from information_schema.tables limit 10;
+
+- id: 2
+  sql: |
+    select * from information_schema.statistics limit 10;
+
+- id: 3
+  sql: |
+    select * from information_schema.columns limit 100;
