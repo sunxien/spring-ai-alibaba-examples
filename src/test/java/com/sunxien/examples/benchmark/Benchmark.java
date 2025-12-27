@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.InputStream;
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -31,7 +28,7 @@ public class Benchmark {
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = "";
 
-    private static final int MAX_EXECUTE_TIMES = 1000;
+    private static final int MAX_EXECUTE_TIMES = 10000;
 
     public static Connection conn;
 
@@ -97,8 +94,12 @@ public class Benchmark {
     public static void targetMethod(Sql sql) {
         try (Statement stmt = conn.createStatement()) {
             try (ResultSet rs = stmt.executeQuery(sql.sql)) {
+                int columnCount = rs.getMetaData().getColumnCount();
                 while (rs.next()) {
                     // ignore client process.
+                    for (int i = 0; i < columnCount; i++) {
+                        rs.getObject((i + 1));
+                    }
                 }
             }
         } catch (Exception e) {
